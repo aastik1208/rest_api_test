@@ -1,7 +1,7 @@
 class Api::V1::CandidatesController < ApplicationController
 
     def index
-        @candidates = Candidate.all
+        @candidates = Candidate.page(page).per(per_page)
         render json: @candidates
     end
 
@@ -33,6 +33,14 @@ class Api::V1::CandidatesController < ApplicationController
 
     def candidate_params
         params.require(:candidate).permit(:name, :email, :phone_number, :address)
+    end
+
+    def page
+        @page ||= params[:page] || 1
+    end
+
+    def per_page
+        @per_page ||= params[:per_page] || 10
     end
 
 end
